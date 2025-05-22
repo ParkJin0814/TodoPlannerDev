@@ -12,3 +12,6 @@
 ## API 명세서
 [API 명세 링크](https://isklkl977.atlassian.net/wiki/external/OWMyNmQzZDQ5MGI3NDc0NDkwNWZhNGU0YWM3MjNiZTU)
 
+## ERD
+![img.png](ERDImage.png)
+
