@@ -21,6 +21,7 @@ public class PlanServiceImpl implements PlanService {
         // 임시 유저
         User user = userRepository.findById(1L).orElseThrow();
         Plan plan = new Plan(dto.getTitle(), dto.getContents(), user);
+        user.addPlan(plan);
         planRepository.save(plan);
 
         return new PlanResponseDto(plan);
