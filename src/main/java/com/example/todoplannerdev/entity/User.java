@@ -2,10 +2,12 @@ package com.example.todoplannerdev.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user")
 @Getter
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
@@ -18,4 +20,10 @@ public class User extends BaseEntity {
     private String email;
     @Column(length = 40, nullable = false)
     private String password;
+
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 }
