@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "plan")
 @Getter
@@ -24,6 +26,9 @@ public class Plan extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
     public Plan(String title, String contents, User user) {
         this.title = title;
         this.contents = contents;
@@ -32,5 +37,9 @@ public class Plan extends BaseEntity {
 
     public void updateContents(String contents) {
         this.contents = contents;
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 }

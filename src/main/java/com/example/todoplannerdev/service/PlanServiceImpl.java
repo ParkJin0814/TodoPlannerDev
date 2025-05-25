@@ -6,6 +6,7 @@ import com.example.todoplannerdev.entity.Plan;
 import com.example.todoplannerdev.entity.User;
 import com.example.todoplannerdev.exception.BaseException;
 import com.example.todoplannerdev.exception.ForbiddenAccessException;
+import com.example.todoplannerdev.exception.NotFoundException;
 import com.example.todoplannerdev.repository.PlanRepository;
 import com.example.todoplannerdev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public PlanResponseDto createPlan(PlanRequestDto dto, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         Plan plan = new Plan(dto.getTitle(), dto.getContents(), user);
         user.addPlan(plan);
         planRepository.save(plan);
@@ -31,7 +32,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public PlanResponseDto findPlanById(Long planId) {
-        Plan plan = planRepository.findById(planId).orElseThrow();
+        Plan plan = planRepository.findById(planId).orElseThrow(NotFoundException::new);
 
 
         return new PlanResponseDto(plan);
@@ -40,7 +41,7 @@ public class PlanServiceImpl implements PlanService {
     @Transactional
     @Override
     public PlanResponseDto updatePlanContent(Long planId, String contents, Long userId) {
-        Plan plan = planRepository.findById(planId).orElseThrow();
+        Plan plan = planRepository.findById(planId).orElseThrow(NotFoundException::new);
 
         if (!plan.getUser().getId().equals(userId)) {
             throw new ForbiddenAccessException();
@@ -52,7 +53,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public void deletePlan(Long planId, Long userId) {
-        Plan plan = planRepository.findById(planId).orElseThrow();
+        Plan plan = planRepository.findById(planId).orElseThrow(NotFoundException::new);
 
         if (!plan.getUser().getId().equals(userId)) {
             throw new ForbiddenAccessException();

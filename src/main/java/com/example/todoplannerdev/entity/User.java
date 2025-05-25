@@ -25,6 +25,8 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Plan> plans;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 
 
     public User(String name, String email, String password) {
@@ -39,5 +41,9 @@ public class User extends BaseEntity {
 
     public void addPlan(Plan plan) {
         plans.add(plan);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 }
