@@ -49,7 +49,7 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<Void> login(
-            @RequestBody LoginRequestDto dto,
+            @Valid @RequestBody LoginRequestDto dto,
             HttpServletRequest request
     ) {
         LoginResponseDto loginUser = userService.login(dto);
