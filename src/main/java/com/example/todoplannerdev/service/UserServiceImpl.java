@@ -2,6 +2,7 @@ package com.example.todoplannerdev.service;
 
 import com.example.todoplannerdev.dto.*;
 import com.example.todoplannerdev.entity.User;
+import com.example.todoplannerdev.exception.InvalidCredentialsException;
 import com.example.todoplannerdev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,10 +48,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponseDto login(LoginRequestDto dto) {
-        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow();
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(InvalidCredentialsException::new);
         // 비밀번호가 틀릴경우
         if (!user.getPassword().equals(dto.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new InvalidCredentialsException();
         }
 
         return new LoginResponseDto(user.getId());
