@@ -4,13 +4,13 @@ import com.example.todoplannerdev.dto.PlanRequestDto;
 import com.example.todoplannerdev.dto.PlanResponseDto;
 import com.example.todoplannerdev.entity.Plan;
 import com.example.todoplannerdev.entity.User;
-import com.example.todoplannerdev.exception.BaseException;
 import com.example.todoplannerdev.exception.ForbiddenAccessException;
 import com.example.todoplannerdev.exception.NotFoundException;
 import com.example.todoplannerdev.repository.PlanRepository;
 import com.example.todoplannerdev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,5 +60,11 @@ public class PlanServiceImpl implements PlanService {
         }
 
         planRepository.delete(plan);
+    }
+
+    @Override
+    public Page<PlanResponseDto> getPlanList(PageRequest pageRequest) {
+        Page<Plan> planPage = planRepository.findAllByOrderByUpdatedAtDesc(pageRequest);
+        return planPage.map(PlanResponseDto::new);
     }
 }

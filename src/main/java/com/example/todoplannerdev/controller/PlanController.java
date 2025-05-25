@@ -6,6 +6,8 @@ import com.example.todoplannerdev.service.PlanService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,5 +63,16 @@ public class PlanController {
         planService.deletePlan(planId, userId);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<PlanResponseDto>> getPlanList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<PlanResponseDto> planList = planService.getPlanList(pageRequest);
+
+        return ResponseEntity.ok(planList);
     }
 }
