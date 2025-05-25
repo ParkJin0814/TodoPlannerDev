@@ -3,7 +3,7 @@ use todoplanner;
 CREATE TABLE `user` (
                         `id`	bigint AUTO_INCREMENT PRIMARY KEY COMMENT '유저 고유 식별값',
                         `name`	varchar(4)	NOT NULL	COMMENT '이름',
-                        `email`	varchar(40)	NOT NULL	COMMENT '이메일',
+                        `email`	varchar(40)	NOT NULL unique 	COMMENT '이메일',
                         `password`	varchar(40)	NOT NULL	COMMENT '비밀번호',
                         `created_at`	timestamp	NOT NULL	COMMENT '생성일',
                         `updated_at`	timestamp	NOT NULL	COMMENT '수정일'

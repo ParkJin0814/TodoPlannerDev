@@ -4,7 +4,8 @@ import com.example.todoplannerdev.dto.PlanRequestDto;
 import com.example.todoplannerdev.dto.PlanResponseDto;
 import com.example.todoplannerdev.entity.Plan;
 import com.example.todoplannerdev.entity.User;
-import com.example.todoplannerdev.exception.PlannerException;
+import com.example.todoplannerdev.exception.BaseException;
+import com.example.todoplannerdev.exception.ForbiddenAccessException;
 import com.example.todoplannerdev.repository.PlanRepository;
 import com.example.todoplannerdev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class PlanServiceImpl implements PlanService {
         Plan plan = planRepository.findById(planId).orElseThrow();
 
         if (!plan.getUser().getId().equals(userId)) {
-            throw new PlannerException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+            throw new ForbiddenAccessException();
         }
 
         plan.updateContents(contents);
@@ -54,7 +55,7 @@ public class PlanServiceImpl implements PlanService {
         Plan plan = planRepository.findById(planId).orElseThrow();
 
         if (!plan.getUser().getId().equals(userId)) {
-            throw new PlannerException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+            throw new ForbiddenAccessException();
         }
 
         planRepository.delete(plan);

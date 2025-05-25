@@ -5,6 +5,7 @@ import com.example.todoplannerdev.dto.*;
 import com.example.todoplannerdev.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    // 일정생성
+    // 유저생성
     @PostMapping
-    public ResponseEntity<UserResponseDto> createPlan(@RequestBody UserRequestDto dto) {
+    public ResponseEntity<UserResponseDto> createPlan(@Valid @RequestBody UserRequestDto dto) {
         return new ResponseEntity<>(userService.createUser(dto), HttpStatus.CREATED);
     }
 
@@ -37,7 +38,7 @@ public class UserController {
         return new ResponseEntity<>(userService.updateUser(userId, dto), HttpStatus.OK);
     }
 
-    // 일정삭제
+    // 유저삭제
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deletePlan(@PathVariable Long userId) {
         userService.deleteUser(userId);
@@ -45,6 +46,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 로그인
     @PostMapping("/login")
     public ResponseEntity<Void> login(
             @RequestBody LoginRequestDto dto,
@@ -58,6 +60,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 로그아웃
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
