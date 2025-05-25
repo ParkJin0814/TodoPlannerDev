@@ -1,9 +1,10 @@
 package com.example.todoplannerdev.controller;
 
-import com.example.todoplannerdev.dto.PlanRequestDto;
-import com.example.todoplannerdev.dto.PlanResponseDto;
-import com.example.todoplannerdev.dto.PlanUpdateRequestDto;
+import com.example.todoplannerdev.common.LoginConst;
+import com.example.todoplannerdev.dto.*;
 import com.example.todoplannerdev.service.PlanService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,14 @@ public class PlanController {
 
     // 일정생성
     @PostMapping
-    public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto dto) {
-        return new ResponseEntity<>(planService.createPlan(dto), HttpStatus.CREATED);
+    public ResponseEntity<PlanResponseDto> createPlan(@RequestBody PlanRequestDto dto, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+
+        LoginResponseDto loginUser = (LoginResponseDto)session.getAttribute(LoginConst.LOGIN_USER);
+        Long userId = loginUser.getId();
+
+        return new ResponseEntity<>(planService.createPlan(dto, userId), HttpStatus.CREATED);
     }
 
     // 고유식별자로 단건조회
@@ -32,15 +39,26 @@ public class PlanController {
     @PutMapping("/{planId}")
     public ResponseEntity<PlanResponseDto> updateContentPlanById(
             @PathVariable Long planId,
-            @RequestBody PlanUpdateRequestDto dto
+            @RequestBody PlanUpdateRequestDto dto,
+            HttpServletRequest request
     ) {
-        return new ResponseEntity<>(planService.updatePlanContent(planId, dto.getContents()), HttpStatus.OK);
+        HttpSession session = request.getSession();
+
+        LoginResponseDto loginUser = (LoginResponseDto)session.getAttribute(LoginConst.LOGIN_USER);
+        Long userId = loginUser.getId();
+
+        return new ResponseEntity<>(planService.updatePlanContent(planId, dto.getContents(), userId), HttpStatus.OK);
     }
 
     // 일정삭제
     @DeleteMapping("/{planId}")
-    public ResponseEntity<Void> deletePlan(@PathVariable Long planId) {
-        planService.deletePlan(planId);
+    public ResponseEntity<Void> deletePlan(@PathVariable Long planId, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        LoginResponseDto loginUser = (LoginResponseDto)session.getAttribute(LoginConst.LOGIN_USER);
+        Long userId = loginUser.getId();
+
+        planService.deletePlan(planId, userId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

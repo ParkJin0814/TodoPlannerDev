@@ -50,11 +50,9 @@ public class UserController {
             @RequestBody LoginRequestDto dto,
             HttpServletRequest request
     ) {
-        LoginResponseDto loginResponseDto = userService.login(dto);
-        Long userId = loginResponseDto.getId();
+        LoginResponseDto loginUser = userService.login(dto);
         HttpSession session = request.getSession();
 
-        UserResponseDto loginUser = userService.findUserById(userId);
         session.setAttribute(LoginConst.LOGIN_USER, loginUser);
 
         return new ResponseEntity<>(HttpStatus.OK);
