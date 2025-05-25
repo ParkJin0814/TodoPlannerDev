@@ -1,8 +1,6 @@
 package com.example.todoplannerdev.service;
 
-import com.example.todoplannerdev.dto.UserRequestDto;
-import com.example.todoplannerdev.dto.UserResponseDto;
-import com.example.todoplannerdev.dto.UserUpdateRequestDto;
+import com.example.todoplannerdev.dto.*;
 
 public interface UserService {
     UserResponseDto createUser(UserRequestDto dto);
@@ -12,4 +10,6 @@ public interface UserService {
     UserResponseDto updateUser(Long userId, UserUpdateRequestDto dto);
 
     void deleteUser(Long userId);
+
+    LoginResponseDto login(LoginRequestDto dto);
 }

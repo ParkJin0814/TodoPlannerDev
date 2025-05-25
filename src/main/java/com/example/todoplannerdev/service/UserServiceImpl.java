@@ -1,13 +1,13 @@
 package com.example.todoplannerdev.service;
 
-import com.example.todoplannerdev.dto.UserRequestDto;
-import com.example.todoplannerdev.dto.UserResponseDto;
-import com.example.todoplannerdev.dto.UserUpdateRequestDto;
+import com.example.todoplannerdev.dto.*;
 import com.example.todoplannerdev.entity.User;
 import com.example.todoplannerdev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +43,16 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow();
 
         userRepository.delete(user);
+    }
+
+    @Override
+    public LoginResponseDto login(LoginRequestDto dto) {
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow();
+        // 비밀번호가 틀릴경우
+        if (!user.getPassword().equals(dto.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        return new LoginResponseDto(user.getId());
     }
 }
