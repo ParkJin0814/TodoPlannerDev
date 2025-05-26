@@ -65,6 +65,7 @@ public class PlanController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 일정조회 페이징
     @GetMapping
     public ResponseEntity<Page<PlanResponseDto>> getPlanList(
             @RequestParam(defaultValue = "0") int page,
